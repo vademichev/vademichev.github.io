@@ -15,7 +15,7 @@
                 });
             } 
 
-            let deferredPrompt; // Переменная, чтобы хранить запрос на установку
+            let deferredPrompt=null; // Переменная, чтобы хранить запрос на установку
             window.addEventListener('beforeinstallprompt', (e) => {
                   e.preventDefault(); // сразу запрос не выдаем
                   deferredPrompt = e; // запоминаем в переменную
