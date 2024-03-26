@@ -5,7 +5,16 @@
        
         <link rel="stylesheet" href="hh.css?v=2" />
         <script type="text/javascript">
-            if ('serviceWorker' in navigator) {
+          let installPrompt = null;
+	  let installButton = document.querySelector("#install");
+
+	window.addEventListener("beforeinstallprompt", (event) => {
+ 		 event.preventDefault();
+ 		 installPrompt = event;
+ 		 installButton.removeAttribute("hidden");
+	});
+	
+		if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js')
                 .then(function(registration) {
                     console.log('Registration successful, scope is:', registration.scope);
@@ -15,28 +24,18 @@
                 });
             } 
 
-            let deferredPrompt=null; // Переменная, чтобы хранить запрос на установку
-            window.addEventListener('beforeinstallprompt', (e) => {
-                  e.preventDefault(); // сразу запрос не выдаем
-                  deferredPrompt = e; // запоминаем в переменную
-                 fetch("hh.txt?mode=nocache").then(data => data.text()).then(data => {
-                    animateText(data)});
-              });
+          
             // javascript
             window.addEventListener('load', function(){
-                const installApp = document.getElementById('installApp');
-                installApp.addEventListener('click', async () => 
-                {
-                      if (deferredPrompt !== null) 
-                      {
-                            deferredPrompt.prompt();
-                            const { outcome } = await deferredPrompt.userChoice;
-                            if (outcome === 'accepted') 
-                            {
-                                      deferredPrompt = null;
-                            }
-                      }
-                });
+                installButton.addEventListener("click", async () => {
+ 		 if (!installPrompt) {
+		    return;
+  			}
+		  const result = await installPrompt.prompt();
+ 		  console.log(`Install prompt was: ${result.outcome}`);
+ 		  installPrompt = null;
+ 		  installButton.setAttribute("hidden", "");
+		});
             });
    
   
@@ -88,7 +87,7 @@ function animateText(data) {
         </style>
     </head>
     <body>
-        <button id="installApp">Установить как приложение</button>
+        <button id="install">Установить как приложение</button>
         <div class="center">
             <p id="text"></p>
         </div>
