@@ -13,7 +13,7 @@
                 .catch(function(error) {
                     console.log('Service worker registration failed, error:', error);
                 });
-            }
+            } 
 
             let deferredPrompt; // Переменная, чтобы хранить запрос на установку
             window.addEventListener('beforeinstallprompt', (e) => {
