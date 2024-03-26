@@ -22,7 +22,7 @@
             });
             // javascript
             window.addEventListener('load', function(){
-                const installApp = document.getElementById('installInstuctions');
+                const installApp = document.getElementById('installApp');
                 installApp.addEventListener('click', async () => 
                 {
                       if (deferredPrompt !== null) 
@@ -39,7 +39,7 @@
             
         </script>
         <style>
-            #installInstructions {
+            #installApp {
                     display: none;
                     background-color: yellow;
                     height: fit-content;
@@ -47,14 +47,14 @@
                     color:red;
             }
             @media (display-mode: browser) {
-                    #installInstructions {
+                    #installApp {
                     display: block;
                 }
             }
         </style>
     </head>
     <body>
-        <div id="installInstuctions"> Установить как приложение </div>
+        <button id="installApp">Установить как приложение</button>
         <div class="center">
             <p id="text"></p>
         </div>
