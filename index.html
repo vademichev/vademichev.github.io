@@ -14,9 +14,47 @@
                     console.log('Service worker registration failed, error:', error);
                 });
             }
+
+            let deferredPrompt; // Переменная, чтобы хранить запрос на установку
+            window.addEventListener('beforeinstallprompt', (e) => {
+                  e.preventDefault(); // сразу запрос не выдаем
+                  deferredPrompt = e; // запоминаем в переменную
+            });
+            // javascript
+            window.addEventListener('load', function(){
+                const installApp = document.getElementById('installInstuctions');
+                installApp.addEventListener('click', async () => 
+                {
+                      if (deferredPrompt !== null) 
+                      {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            if (outcome === 'accepted') 
+                            {
+                                      deferredPrompt = null;
+                            }
+                      }
+                });
+            });
+            
         </script>
+        <style>
+            #installInstructions {
+                    display: none;
+                    background-color: yellow;
+                    height: fit-content;
+                    width: fit-content;
+                    color:red;
+            }
+            @media (display-mode: browser) {
+                    #installInstructions {
+                    display: block;
+                }
+            }
+        </style>
     </head>
     <body>
+        <div id="installInstuctions"> Установить как приложение </div>
         <div class="center">
             <p id="text"></p>
         </div>
